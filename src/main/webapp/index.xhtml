@@ -1,0 +1,68 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head></h:head>
+<body>
+
+	<h:form>
+		<p:commandButton value="Open Modal" update="modalDialog"
+			oncomplete="PF('modalDlg').show()" />
+	</h:form>
+
+	<p:dialog widgetVar="modalDlg" header="Modal Dialog" modal="true"
+		resizable="false">
+		<!-- Content of the modal dialog -->
+		<h:form>
+			<p:outputLabel for="titre" value="Titre:" />
+			<p:inputText id="titre" value="#{moduleBean.titre}" />
+			<p:outputLabel for="nb" value="Nombre Heures:" />
+			<p:inputText id="nb" value="#{moduleBean.nb}" />
+			<p:outputLabel for="fil" value="Filiere:" />
+			<p:inputText id="fil" value="#{moduleBean.fil}" />
+
+			<p:commandButton value="Add" action="#{moduleBean.add()}"
+				oncomplete="PF('modalDlg').hide()" />
+			<p:commandButton value="Cancel" oncomplete="PF('modalDlg').hide()" />
+		</h:form>
+	</p:dialog>
+    <p:growl id="messages" showDetail="true" />
+	<div class="card">
+		<h:form>
+			<p:dataTable var="module" value="#{moduleBean.modules}" rows="10"
+				paginator="true" paginatorPosition="both"
+				paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+				currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
+				rowsPerPageTemplate="5,10,{ShowAll|'All'}">
+
+				<p:column headerText="Code Module">
+					<h:outputText value="#{module.idModule}" />
+				</p:column>
+
+				<p:column headerText="Titre">
+					<h:outputText value="#{module.titre}" />
+				</p:column>
+
+				<p:column headerText="Nombre Heures">
+					<h:outputText value="#{module.nb}" />
+				</p:column>
+				<p:column headerText="Filiere">
+					<h:outputText value="#{module.filiere}" />
+				</p:column>
+
+				<f:facet name="paginatorTopLeft">
+					<p:commandButton type="button" icon="pi pi-refresh" />
+				</f:facet>
+
+				<f:facet name="paginatorBottomRight">
+					<p:commandButton type="button" icon="pi pi-cloud-upload" />
+				</f:facet>
+
+			</p:dataTable>
+		</h:form>
+	</div>
+</body>
+</html>
