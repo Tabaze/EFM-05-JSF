@@ -5,7 +5,7 @@ import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistry;
 
-import com.crjj.model.Module;
+import com.crjj.model.*;
 
 public class HibernateUtils {
 	
@@ -16,7 +16,7 @@ public class HibernateUtils {
 		Configuration config = new Configuration();
 		config.configure();
 		
-		config.addAnnotatedClass(Module);
+		config.addAnnotatedClass(Module.class);
 		
 		serviceRegistry = new StandardServiceRegistryBuilder().applySettings(config.getProperties()).build();
 		sessionFactory = config.buildSessionFactory(serviceRegistry);

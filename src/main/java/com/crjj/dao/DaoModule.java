@@ -3,21 +3,37 @@ package com.crjj.dao;
 import java.util.List;
 
 
-import org.hibernate.SessionFactory;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 import com.crjj.model.Module;
 import com.crjj.utils.HibernateUtils;
 
 public class DaoModule implements IDAO<Module> {
-	SessionFactory sessionFactory;
 	@Override
 	public List<Module> getAll() {
-		return sessionFactory.getCurrentSession().createQuery("from Module").list();
+		Session s = HibernateUtils.getSessionfactory().getCurrentSession();
+		Transaction t = s.beginTransaction();
+
+		List<Module> commande = s.createQuery("from Module").list();
+
+		t.commit();
+		s.close();
+
+		return commande;
 	}
 
 	@Override
 	public Module getOne(int id) {
-		// TODO Auto-generated method stub
-		return (Module)sessionFactory.getCurrentSession().createQuery("from Module where id = :moduleId").setParameter("moduleId", id).uniqueResult();
+
+		Session session = HibernateUtils.getSessionfactory().getCurrentSession();
+		Transaction t = session.beginTransaction();
+
+		Module commande = session.get(Module.class, id);
+
+		t.commit();
+		session.close();
+
+		return commande;
 	}
 
 	@Override
@@ -40,14 +56,34 @@ public class DaoModule implements IDAO<Module> {
 
 	@Override
 	public boolean update(Module obj) {
-		// TODO Auto-generated method stub
-		return false;
+		try {
+			Session session = HibernateUtils.getSessionfactory().getCurrentSession();
+			Transaction t = session.beginTransaction();
+
+			session.update(obj);
+
+			t.commit();
+			session.close();
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
 	}
 
 	@Override
 	public boolean delete(Module obj) {
-		// TODO Auto-generated method stub
-		return false;
+		try {
+			Session session = HibernateUtils.getSessionfactory().getCurrentSession();
+			Transaction t = session.beginTransaction();
+
+			session.delete(obj);
+
+			t.commit();
+			session.close();
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
 	}
 
 }
